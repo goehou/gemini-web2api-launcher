@@ -39,3 +39,7 @@ start-gemini-web2api.cmd config   # 重新配置
 - PowerShell 5.1+
 - Python 3.x
 - [gemini-web2api](https://github.com/goehou/gemini-web2api) 项目
+
+## 🤝 友情链接
+
+- [Linux Do](https://linux.do/)
