@@ -84,7 +84,7 @@ echo.
 powershell -NoProfile -ExecutionPolicy Bypass -Command "Write-Host '[gemini-web2api] 正在启动...'"
 call :check_files || exit /b 1
 call :stop_quiet
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$p = Start-Process -FilePath '!PYTHON_EXE!' -ArgumentList '.\gemini_web2api.py' -WorkingDirectory '!PROJECT_DIR!' -WindowStyle Hidden -PassThru; Set-Content -Path '%PID_FILE%' -Value $p.Id"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$p = Start-Process -FilePath '!PYTHON_EXE!' -ArgumentList '-m','gemini_web2api' -WorkingDirectory '!PROJECT_DIR!' -WindowStyle Hidden -PassThru; Set-Content -Path '%PID_FILE%' -Value $p.Id"
 powershell -NoProfile -ExecutionPolicy Bypass -Command "$ok = $false; for ($i = 0; $i -lt 15; $i++) { Start-Sleep -Seconds 1; try { Invoke-RestMethod -Uri 'http://127.0.0.1:%PORT%/v1/models' -Headers @{Authorization='Bearer %API_KEY%'} -TimeoutSec 2 | Out-Null; $ok = $true; break } catch {} }; if ($ok) { Write-Host '[gemini-web2api] 启动成功: http://127.0.0.1:%PORT%/v1'; exit 0 } else { Write-Host '[gemini-web2api] 启动失败。'; exit 1 }"
 exit /b %errorlevel%
 
@@ -112,8 +112,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "if (Test-Path '%PID_FILE
 exit /b 0
 
 :check_files
-if not exist "!PROJECT_DIR!\gemini_web2api.py" (
-  powershell -NoProfile -Command "Write-Host '[gemini-web2api] 错误: 未找到 gemini_web2api.py。'"
+if not exist "!PROJECT_DIR!\gemini_web2api\__main__.py" (
+  powershell -NoProfile -Command "Write-Host '[gemini-web2api] 错误: 未找到 gemini_web2api 包目录。'"
   exit /b 1
 )
 if not exist "!PYTHON_EXE!" (
