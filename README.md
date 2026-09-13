@@ -5,6 +5,7 @@ gemini-web2api 服务的 Windows 启动管理工具。
 ## 功能
 
 - 启动/停止/查看 gemini-web2api 服务状态
+- 双端口双实例：项目目录同时存在 `.env.anon` / `.env.cookie` 时，自动同时启动 8081 匿名实例 + 8082 cookie 认证实例
 - 首次运行自动引导配置项目目录和 Python 路径
 - 配置持久化到 `config.cfg`
 - 支持菜单交互和命令行参数两种模式
@@ -43,3 +44,10 @@ start-gemini-web2api.cmd config   # 重新配置
 ## 🤝 友情链接
 
 - [Linux Do](https://linux.do/)
+
+## 更新记录
+
+### 2026-09-13
+
+- **双端口支持**：检测到 `.env.anon` / `.env.cookie` 时自动双实例模式（8081 匿名 + 8082 认证），`start`/`stop`/`status` 全部支持双实例；无 `.env` 文件时保持原单实例行为
+- **修复**：netstat 端口进程匹配 `0.0.0.0`/`127.0.0.1` 两种绑定；`config.cfg` 改写为 LF-only，绕开 `chcp 65001` 下 CRLF 残留 `\r` 导致路径检查失败的 quirk
